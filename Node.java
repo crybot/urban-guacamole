@@ -5,6 +5,14 @@ import java.util.NoSuchElementException;
 
 public abstract class Node<E>
 {
+    /* OVERVIEW:
+     * The abstract data type Node<E> represents a generic prototype of a node 
+     * data structure that contains a value (or label) of type E.
+     * A node holds all of its outgoing connections to other nodes in the form of
+     * a set containing values of type E.
+     * a typical instance is the tuple: <label, {v¹, v², ... , vⁿ}>
+     */
+
     protected E label;
     protected Collection<E> adiacency;
 
