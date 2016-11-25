@@ -16,14 +16,14 @@ public interface Graph<E>
     //REQUIRES: node ≠ null
     //MODIFIES: V
     //EFFECTS:  Adds a node 'v' to V such that V = V ∪ {v}.
-    //          if node == nul          throws IllegalArgumentException.
+    //          if node == nul          throws IllegalArgumentException (unchecked).
     void addNode(Node<E> node) throws IllegalArgumentException;
 
     //REQUIRES: edge ِ≠ null
     //MODIFIES: E'
     //EFFECTS:  Adds an edge 'edge' to E', creating a connection between two elements
     //          of V.
-    //          if edge == null         throws IllegalArgumentException.
+    //          If edge == null         throws IllegalArgumentException (unchecked).
     void addEdge(Edge<E> edge) throws IllegalArgumentException;
 
     //REQUIRES: node ≠ null
@@ -31,8 +31,8 @@ public interface Graph<E>
     //MODIFIES: V, E'
     //EFFECTS:  Removes a node 'node' from V along with all its incoming and outgoing 
     //          connections(namely c ⊆ E') , such that V = V \ {node} and E' = E' \ c.
-    //          If node \not ∈ V        throws NoSuchElementException.
-    //          If node == null         throws IllegalArgumentException.
+    //          If node \not ∈ V        throws NoSuchElementException (unchecked).
+    //          If node == null         throws IllegalArgumentException (unchecked).
     void removeNode(Node<E> node) throws NoSuchElementException, IllegalArgumentException;
 
     //REQUIRES: nodeLabel ≠ null
@@ -41,22 +41,22 @@ public interface Graph<E>
     //EFFECTS:  Removes a node 'v' from V along with all its incoming and outgoing 
     //          connections(namely c ⊆ E'), such that v = getNode(nodeLabel), 
     //          V = V \ {v}      and     E' = E' \ c.
-    //          If v \not ∈ V           throws NoSuchElementException.
-    //          If nodeLabel == null    throws IllegalArgumentException.
+    //          If v \not ∈ V           throws NoSuchElementException (unchecked).
+    //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
     void removeNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException;
 
     //REQUIRES: node ≠ null
     //          edge ∈ E'
     //MODIFIES: E'
     //EFFECTS:  Removes an edge from E', such that E' = E' \ {edge}.
-    //          If edge == null         throws IllegalArgumentException.
-    //          If edge \not ∈ E'       throws NoSuchElementException.
+    //          If edge == null         throws IllegalArgumentException (unchecked).
+    //          If edge \not ∈ E'       throws NoSuchElementException (unchecked).
     void removeEdge(Edge<E> edge) throws NoSuchElementException, IllegalArgumentException;
 
 
     //REQUIRES: nodeLabel ≠ null
     //EFFECTS:  Returns true if getNode(nodeLabel) ∈ V, false otherwise.
-    //          If nodeLabel == null    throws IllegalArgumentException. 
+    //          If nodeLabel == null    throws IllegalArgumentException (unchecked). 
     boolean containsNode(E nodeLabel) throws IllegalArgumentException;
 
 
@@ -64,7 +64,7 @@ public interface Graph<E>
     //          ∃ v ∈ V: v.getLabel() == nodeLabel
     //EFFECTS:  Returns v such that v ∈ V and v.getLabel() == nodeLabel, if
     //          there exist such a node.
-    //          Otherwise               throws NoSuchElementException otherwise.
-    //          If nodeLabel == null    throws IllegalArgumentException
+    //          Otherwise               throws NoSuchElementException otherwise (unchecked).
+    //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
     Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException; // may expose to vulnerabilities
 }
