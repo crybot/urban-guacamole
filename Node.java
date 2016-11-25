@@ -5,24 +5,16 @@ import java.util.HashSet;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-public class Node<E>
+public abstract class Node<E>
 {
-    private E label;
-    private HashSet<E> adiacency;
+    protected E label;
+    protected Collection<E> adiacency;
 
-    private HashSet<E> copy(Collection<? extends E> adiacency)
-    {
-        HashSet<E> tmp = new HashSet<>();
-        for (E v : adiacency) // may be more generic?
-            tmp.add(v);
-        return tmp;
-    }
-
-    public Node(Collection<? extends E> adiacency, E label) throws IllegalArgumentException
+    public Node(Collection<E> adiacency, E label) throws IllegalArgumentException
     {
         if (adiacency == null || label == null) throw new IllegalArgumentException();
         this.label = label; // TODO: force deep copy
-        this.adiacency = copy(adiacency);
+        this.adiacency = adiacency;
     }
 
     public Node(E label)
@@ -38,21 +30,17 @@ public class Node<E>
     public void addConnection(E nodeLabel) throws IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        adiacency.add(nodeLabel);
+        if (!adiacency.contains(nodeLabel)) 
+                adiacency.add(nodeLabel);
     }
 
     public void removeConnection(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        if (!adiacency.remove(nodeLabel)) throw new NoSuchElementException();
-        //Predicate<E> p = (E label) -> label.equals(nodeLabel); // explicit parameter signature not necessary, but quite informative
-        //adiacency.removeIf(p);
+
+        // explicit parameter signature not necessary, but quite informative
+        Predicate<E> p = (E label) -> label.equals(nodeLabel); 
+        if(!adiacency.removeIf(p)) throw new NoSuchElementException();
     }
 
-    @Override
-    public boolean equals(Object other)
-    {
-        // TODO: implement equals with generics
-        return super.equals(other);
-    }
 }

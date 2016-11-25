@@ -19,8 +19,8 @@ public class GraphList<E> implements Graph<E>
         if (edge == null) throw new IllegalArgumentException();
         E out = edge.getOutgoing();
         E in = edge.getIncoming();
-        if(!containsNode(out)) addNode(new Node<E>(out));
-        if(!containsNode(in)) addNode(new Node<E>(in));
+        if(!containsNode(out)) addNode(new HashNode<E>(out));
+        if(!containsNode(in)) addNode(new HashNode<E>(in));
 
         nodeMap.get(out).addConnection(in);
         //getNode(out).addConnection(in); // needs getNode returning a referencde
