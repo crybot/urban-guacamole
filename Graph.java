@@ -1,22 +1,16 @@
+import java.util.NoSuchElementException;
+import java.lang.IllegalArgumentException;
 
-public abstract class Graph<E>
+public interface Graph<E>
 {
-    protected Graph() {}
-    abstract void addNode(Node<E> node);
+    void addNode(Node<E> node) throws IllegalArgumentException;
 
-    void addEdge(Edge<E> edge)
-    {
-        E out = edge.getOutgoing();
-        E in = edge.getIncoming();
-        if(!containsNode(out)) addNode(new Node<E>(out));
-        if(!containsNode(in)) addNode(new Node<E>(in));
+    void addEdge(Edge<E> edge) throws IllegalArgumentException;
 
-        getNode(out).addConnection(in); // needs getNode returning a referencde
-    }
-
-    abstract void removeNode(Node<E> node);
-    abstract void removeEdge(Edge<E> node); //throws exception
-    abstract boolean containsNode(E nodeLabel);
-    abstract Node<E> getNode(E nodeLabel); // may expose to vulnerabilities
+    void removeNode(Node<E> node) throws NoSuchElementException, IllegalArgumentException;
+    void removeNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException;
+    void removeEdge(Edge<E> node) throws NoSuchElementException, IllegalArgumentException;
+    boolean containsNode(E nodeLabel) throws IllegalArgumentException;
+    Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException; // may expose to vulnerabilities
 
 }
