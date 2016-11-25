@@ -49,7 +49,7 @@ public class GraphList<E> implements Graph<E>
     public Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        return nodeMap.get(nodeLabel);
+        return nodeMap.get(nodeLabel); // may expose to vulnerabilities
     }
 
     public boolean containsNode(E nodeLabel) throws IllegalArgumentException
