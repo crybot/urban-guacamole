@@ -14,6 +14,18 @@ public class HashGraph<E> implements Graph<E>
      * in Node<E>, which implicitly defines E'.
      * Nodes are collected with an HashMap<E, Node<E>> where the set of node labels
      * (of type E) are mapped into nodes (of type Node<E>).
+     *
+     * AF:  { <k¹, f(k¹)>, <k², f(k²)>, ... , <kⁿ, f(kⁿ)> }
+     *          where f(k) : nodeMap.keySet() -> nodeMap.values()
+     * IR:  nodeMap ≠ null;
+     *      k ≠ null ∀ k ∈ nodeMap.keySet();
+     *      nodeMap.get(k) ≠ null ∀ k ∈ nodeMap.keySet();
+     *      k¹ ≠ k² ∀ <k¹,k²> ∈ nodeMap.keySet();
+     *      k ∈ nodeMap.keyset() ⇒ ∃ v ∈ nodeMap.values() : nodeMap.get(k) == v;
+     *      k ∈ nodeMap.keySet() ⇒ nodeMap.keySet() == (addNode(k) ↓ nodeMap.keySet())
+     *                           ∧ nodeMap.values() == (addNode(k) ↓ nodeMap.values())
+     *                              where '↓ means apply left method before 
+     *                              evaluating the right one.
      */
 
     private HashMap<E, Node<E>> nodeMap; // not synchronized hash table
@@ -45,7 +57,7 @@ public class HashGraph<E> implements Graph<E>
     public void addNode(E nodeLabel) throws IllegalArgumentException
     { 
         if (nodeLabel == null) throw new IllegalArgumentException();
-        nodeMap.putIfAbsent(nodeLabel, new HashNode<>(nodeLabel)); 
+        addNode(new HashNode<>(nodeLabel));
     }
 
     //REQUIRES: edge ِ≠ null
