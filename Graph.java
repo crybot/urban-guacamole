@@ -16,8 +16,16 @@ public interface Graph<E>
     //REQUIRES: node ≠ null
     //MODIFIES: V
     //EFFECTS:  Adds a node 'v' to V such that V = V ∪ {v}.
-    //          if node == nul          throws IllegalArgumentException (unchecked).
+    //          if node == null         throws IllegalArgumentException (unchecked).
     void addNode(Node<E> node) throws IllegalArgumentException;
+    
+    
+    //REQUIRES: nodeLabel ≠ null
+    //MODIFIES: V
+    //EFFECTS:  Creates a new node 'v' with v.getLabel() = nodeLabel
+    //          and adds it to V such that V = V ∪ {v}.
+    //          if nodeLabel == null    throws IllegalArgumentException (unchecked).
+    void addNode(E nodeLabel) throws IllegalArgumentException;
 
     //REQUIRES: edge ِ≠ null
     //MODIFIES: E'

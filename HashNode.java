@@ -1,6 +1,7 @@
 import java.util.HashSet;
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.ArrayList;
 
 public class HashNode<E> extends Node<E>
 {
@@ -37,4 +38,15 @@ public class HashNode<E> extends Node<E>
         if (!adiacency.remove(nodeLabel)) throw new NoSuchElementException();
     }
 
+    @Override
+    public String toString() 
+    {
+        final StringBuilder sb = new StringBuilder("{ ");
+        for (E v : adiacency)
+        {
+            sb.append(v + ",");
+        }
+        sb.deleteCharAt(sb.length()-1); //deletes last comma
+        return sb.append(" }").toString();
+    }
 }
