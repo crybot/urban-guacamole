@@ -29,11 +29,23 @@ public class HashGraph<E> implements Graph<E>
     //MODIFIES: nodeMap
     //EFFECTS:  Adds a mapping from node.getLabel() to node inside nodeMap.
     //          If there already exists such a mapping then does nothing.
-    //          If node == null          throws IllegalArgumentException (unchecked).
+    //          If node == null         throws IllegalArgumentException (unchecked).
     public void addNode(Node<E> node) throws IllegalArgumentException
     { 
         if (node == null) throw new IllegalArgumentException();
         nodeMap.putIfAbsent(node.getLabel(), node); 
+    }
+    
+    //REQUIRES: nodeLabel ≠ null
+    //MODIFIES: nodeMap
+    //EFFECTS:  Adds a mapping from nodeLabel to (new HashNode<E>(nodeLabel)) 
+    //          inside nodeMap.
+    //          If there already exists such a mapping then does nothing.
+    //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
+    public void addNode(E nodeLabel) throws IllegalArgumentException
+    { 
+        if (nodeLabel == null) throw new IllegalArgumentException();
+        nodeMap.putIfAbsent(nodeLabel, new HashNode<>(nodeLabel)); 
     }
 
     //REQUIRES: edge ِ≠ null
@@ -43,6 +55,7 @@ public class HashGraph<E> implements Graph<E>
     //          edge.getOutgoing() to its connections set.
     //          If either of the two nodes are not already mapped inside nodeMap,
     //          then they are first included inside the collection.
+    //          If connection already exists, then does nothing.
     //          If edge == null         throws IllegalArgumentException (unchecked).
     public void addEdge(Edge<E> edge) throws IllegalArgumentException
     {
@@ -129,4 +142,51 @@ public class HashGraph<E> implements Graph<E>
         if (nodeLabel == null) throw new IllegalArgumentException();
         return nodeMap.containsKey(nodeLabel);
     }
+
+    //EFFECTS: Returns a string representation of the current class instance
+    @Override
+    public String toString() 
+    {
+        final StringBuilder sb = new StringBuilder();
+        for (E node : nodeMap.keySet()) 
+        {
+           sb.append(node + ": " + getNode(node) + "\n");
+        }
+        return sb.toString();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
