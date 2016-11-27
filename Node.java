@@ -11,20 +11,17 @@ public abstract class Node<E>
      * A node holds all of its outgoing connections to other nodes in the form of
      * a set containing values of type E.
      * a typical instance is the tuple: <label, {v¹, v², ... , vⁿ}>
+     * Nodes cannot contain connections to themselves.
      */
 
     protected E label;
     protected Collection<E> adiacency;
-    protected boolean visited;
-    protected int distance;
 
     public Node(Collection<E> adiacency, E label) throws IllegalArgumentException
     {
         if (adiacency == null || label == null) throw new IllegalArgumentException();
         this.label = label; // TODO: force deep copy
         this.adiacency = adiacency;
-        visited = false;
-        distance = -1;
     }
 
     public Node(E label)
@@ -40,7 +37,7 @@ public abstract class Node<E>
     public void addConnection(E nodeLabel) throws IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        if (nodeLabel != this.label && !adiacency.contains(nodeLabel) ) 
+        if (nodeLabel.equals(this.label) && !adiacency.contains(nodeLabel) ) 
                 adiacency.add(nodeLabel);
     }
 
@@ -57,25 +54,4 @@ public abstract class Node<E>
     {
         return adiacency;
     }
-
-    public boolean visited()
-    {
-        return visited;
-    }
-
-    public int getDistance()
-    {
-        return distance;
-    }
-
-    public void setDistance(int distance)
-    {
-        this.distance = distance;
-    }
-
-    public void setVisited(boolean visited)
-    {
-        this.visited = visited;
-    }
-
 }

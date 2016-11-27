@@ -28,7 +28,8 @@ public class HashNode<E> extends Node<E>
     public void addConnection(E nodeLabel) throws IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        adiacency.add(nodeLabel);
+        if (!nodeLabel.equals(this.label))
+            adiacency.add(nodeLabel);
     }
 
     @Override
