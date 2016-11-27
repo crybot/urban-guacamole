@@ -22,7 +22,7 @@ public class HashGraph<E> implements Graph<E>
      * IR:  - nodeMap ≠ null
      *      - k ≠ null ∀ k ∈ nodeMap.keySet()
      *      - nodeMap.get(k) ≠ null ∀ k ∈ nodeMap.keySet()
-     *      - k¹ ≠ k² ∀ <k¹,k²> ∈ nodeMap.keySet()
+     *      - <k¹,k²> ∈ nodeMap.keySet() ⇒ k¹ ≠ k² 
      *      - k ∈ nodeMap.keyset() ⇒ ∃ v ∈ nodeMap.values() : nodeMap.get(k) == v
      *      - k ∈ nodeMap.keySet() ⇒ nodeMap.keySet() == (addNode(k) ↓ nodeMap.keySet()) ∧ 
      *                               nodeMap.values() == (addNode(k) ↓ nodeMap.values())
@@ -31,11 +31,43 @@ public class HashGraph<E> implements Graph<E>
 
     private HashMap<E, Node<E>> nodeMap; // not synchronized hash table
 
+    private boolean repOk()
+    {
+        if (nodeMap == null) return false;
+
+        for (E k : nodeMap.keySet()) 
+            if (k == null) return false;
+
+        for (E k : nodeMap.keySet()) 
+            if (nodeMap.get(k) == null) return false;
+
+        // statement: <k¹,k²> ∈ nodeMap.keySet() ⇒ k¹ ≠ k² 
+        // is automatically verified because nodeMap.keySet() cannot contain
+        // dupllicates as it implements Set<E>
+
+        for (E k : nodeMap.keySet())
+            if (!nodeMap.values().contains(nodeMap.get(k))) return false;
+
+        for (E k : nodeMap.keySet())
+        {
+            // cannot test for set equality since we do not infornce deep cloning
+            // (although we could), so we test for set sizes
+            int keys = nodeMap.keySet().size();
+            int values = nodeMap.values().size();
+            addNode(k); // ↓
+            if (nodeMap.keySet().size() != keys) return false;
+            if (nodeMap.values().size() != values) return false;
+        }
+
+        return true;
+    }
+
     //MODIFIES: nodeMap
     //EFFECTS: Creates a new instance of nodeMap with no elements in it.
     public HashGraph() 
     { 
         nodeMap = new HashMap<E, Node<E>>();
+        assert(repOk());
     }
 
     //REQUIRES: node ≠ null
@@ -45,8 +77,10 @@ public class HashGraph<E> implements Graph<E>
     //          If node == null         throws IllegalArgumentException (unchecked).
     public void addNode(Node<E> node) throws IllegalArgumentException
     { 
+        assert(repOk());
         if (node == null) throw new IllegalArgumentException();
         nodeMap.putIfAbsent(node.getLabel(), node); 
+        assert(repOk());
     }
     
     //REQUIRES: nodeLabel ≠ null
@@ -57,8 +91,10 @@ public class HashGraph<E> implements Graph<E>
     //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
     public void addNode(E nodeLabel) throws IllegalArgumentException
     { 
+        assert(repOk());
         if (nodeLabel == null) throw new IllegalArgumentException();
         addNode(new HashNode<>(nodeLabel));
+        assert(repOk());
     }
 
     //REQUIRES: edge ِ≠ null
@@ -72,6 +108,7 @@ public class HashGraph<E> implements Graph<E>
     //          If edge == null         throws IllegalArgumentException (unchecked).
     public void addEdge(Edge<E> edge) throws IllegalArgumentException
     {
+        assert(repOk());
         if (edge == null) throw new IllegalArgumentException();
         E out = edge.getOutgoing();
         E in = edge.getIncoming();
@@ -80,6 +117,7 @@ public class HashGraph<E> implements Graph<E>
 
         nodeMap.get(out).addConnection(in);
         //getNode(out).addConnection(in); // needs getNode returning a referencde
+        assert(repOk());
     }
 
     //REQUIRES: node ≠ null
@@ -91,9 +129,11 @@ public class HashGraph<E> implements Graph<E>
     //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
     public void removeNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
     {
+        assert(repOk());
         if (nodeLabel == null) throw new IllegalArgumentException();
         if (!nodeMap.containsKey(nodeLabel)) throw new NoSuchElementException();
         nodeMap.remove(nodeLabel);
+        assert(repOk());
     }
 
     //REQUIRES: node ≠ null
@@ -105,8 +145,10 @@ public class HashGraph<E> implements Graph<E>
     //          If node == null         throws IllegalArgumentException.
     public void removeNode(Node<E> node) throws NoSuchElementException, IllegalArgumentException
     { 
+        assert(repOk());
         if (node == null) throw new IllegalArgumentException();
         removeNode(node.getLabel());
+        assert(repOk());
     }
 
 
@@ -123,10 +165,12 @@ public class HashGraph<E> implements Graph<E>
     //                                  throws NoSuchElementException (unchecked).
     public void removeEdge(Edge<E> edge) throws NoSuchElementException, IllegalArgumentException
     {
+        assert(repOk());
         if (edge == null) throw new IllegalArgumentException();
         Node<E> node = nodeMap.get(edge.getOutgoing());
         if (node == null) throw new NoSuchElementException();
         node.removeConnection(edge.getIncoming());
+        assert(repOk());
     }
 
 
@@ -139,9 +183,11 @@ public class HashGraph<E> implements Graph<E>
     //TODO:     Deep copy.
     public Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
     {
+        assert(repOk());
         if (nodeLabel == null) throw new IllegalArgumentException();
         Node<E> node = nodeMap.get(nodeLabel);
         if (node == null) throw new NoSuchElementException();
+        assert(repOk());
         return node; 
     }
 
@@ -152,17 +198,21 @@ public class HashGraph<E> implements Graph<E>
     //          If nodeLabel == null    throws IllegalArgumentException (unchecked). 
     public boolean containsNode(E nodeLabel) throws IllegalArgumentException
     {
+        assert(repOk());
         if (nodeLabel == null) throw new IllegalArgumentException();
+        assert(repOk());
         return nodeMap.containsKey(nodeLabel);
     }
 
     public Collection<Node<E>> getNodes()
     {
+        assert(repOk());
         return nodeMap.values();
     }
 
     public Collection<E> getLabels()
     {
+        assert(repOk());
         return nodeMap.keySet();
     }
 
@@ -170,11 +220,13 @@ public class HashGraph<E> implements Graph<E>
     @Override
     public String toString() 
     {
+        assert(repOk());
         final StringBuilder sb = new StringBuilder();
         for (E node : nodeMap.keySet()) 
         {
            sb.append(node + ": " + getNode(node) + "\n");
         }
+        assert(repOk());
         return sb.toString();
     }
 }
