@@ -37,7 +37,7 @@ public abstract class Node<E>
     public void addConnection(E nodeLabel) throws IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        if (nodeLabel.equals(this.label) && !adiacency.contains(nodeLabel) ) 
+        if (!nodeLabel.equals(this.label) && !adiacency.contains(nodeLabel) ) 
                 adiacency.add(nodeLabel);
     }
 

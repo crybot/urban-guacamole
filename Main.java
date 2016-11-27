@@ -17,13 +17,13 @@ public class Main
             Files.lines(Paths.get("nomi_italiani.txt")).forEach(line -> 
                     {
                         network.addUser(line);
-                        for (int i=0; i<2; i++) network.addFriendship(line, network.randomUser());
+                        for (int i=0; i<5; i++) network.addFriendship(line, network.randomUser());
                     }
             );
         }
         catch(IOException e) {}
 
         network.prettyPrint();
-        System.out.println(network.shortestPath("marco", "giovanni"));
+        System.out.println(network.diameter());
     }
 }

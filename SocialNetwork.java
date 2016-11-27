@@ -64,7 +64,25 @@ public class SocialNetwork
 
     private int getDistance(String source, String destination)
     {
-        return distance.get(new SimpleEntry<>(source, destination));
+        return distance.getOrDefault(new SimpleEntry<>(source, destination), -1);
+    }
+
+    public int diameter()
+    {
+        int max = -1;
+        for (Node<String> source : friendsGraph.getNodes())
+        {
+            for (Node<String> destination : friendsGraph.getNodes())
+            {
+                int distance = 0;
+                if (source != destination)
+                    if ((distance = getDistance(source.getLabel(), destination.getLabel())) == -1)
+                        distance = shortestPath(source.getLabel(), destination.getLabel());
+
+                if (distance > max) max = distance;
+            }
+        }
+        return max;
     }
 
     public int shortestPath(String source, String destination)
