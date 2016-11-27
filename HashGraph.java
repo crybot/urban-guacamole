@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.lang.IllegalArgumentException;
 import java.util.NoSuchElementException;
+import java.util.Collection;
 
 public class HashGraph<E> implements Graph<E>
 {
@@ -141,6 +142,16 @@ public class HashGraph<E> implements Graph<E>
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
         return nodeMap.containsKey(nodeLabel);
+    }
+
+    public Collection<Node<E>> getNodes()
+    {
+        return nodeMap.values();
+    }
+
+    public Collection<E> getLabels()
+    {
+        return nodeMap.keySet();
     }
 
     //EFFECTS: Returns a string representation of the current class instance
