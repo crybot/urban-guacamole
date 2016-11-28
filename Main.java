@@ -24,6 +24,7 @@ public class Main
         catch(IOException e) {}
 
         network.prettyPrint();
-        System.out.println(network.diameter());
+        System.out.println("shortestPath(marco -> sara): " + network.shortestPath("marco", "sara"));
+        System.out.println("network diameter: " + network.diameter());
     }
 }

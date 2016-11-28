@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class HashNode<E> extends Node<E>
 {
-    private static <E> HashSet<E> copy(Collection<E> adiacency)
+    private static <E> HashSet<E> copy(Collection<E> adjacency)
     {
         HashSet<E> tmp = new HashSet<>();
-        for (E v : adiacency) // may be more generic?
+        for (E v : adjacency) // may be more generic?
             tmp.add(v);
         return tmp;
     }
 
-    public HashNode(Collection<E> adiacency, E label) throws IllegalArgumentException
+    public HashNode(Collection<E> adjacency, E label) throws IllegalArgumentException
     {
-        super(copy(adiacency), label);
+        super(copy(adjacency), label);
     }
 
     public HashNode(E label) throws IllegalArgumentException
@@ -29,21 +29,21 @@ public class HashNode<E> extends Node<E>
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
         if (!nodeLabel.equals(this.label))
-            adiacency.add(nodeLabel);
+            adjacency.add(nodeLabel);
     }
 
     @Override
     public void removeConnection(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        if (!adiacency.remove(nodeLabel)) throw new NoSuchElementException();
+        if (!adjacency.remove(nodeLabel)) throw new NoSuchElementException();
     }
 
     @Override
     public String toString() 
     {
         final StringBuilder sb = new StringBuilder("{ ");
-        for (E v : adiacency)
+        for (E v : adjacency)
         {
             sb.append(v + ",");
         }

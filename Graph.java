@@ -1,5 +1,6 @@
 import java.lang.IllegalArgumentException;
 import java.util.NoSuchElementException;
+import java.util.Collection;
 
 public interface Graph<E>
 {
@@ -67,12 +68,23 @@ public interface Graph<E>
     //          If nodeLabel == null    throws IllegalArgumentException (unchecked). 
     boolean containsNode(E nodeLabel) throws IllegalArgumentException;
 
+    //EFFECTS: Returns |V|
+    int size();
 
+    //REQUIRES: nodeLabel ≠ null
+    //          getNode(nodeLabel) ∈ V
+    //EFFECTS:  Returns a collection C = [v¹, v², ..., vⁿ] : <v, w> ∈ E
+    //              where v = getNode(nodeLabel), w ∈ C
+    //          If nodeLabel == null    throws IllegalArgumentException
+    //          If v \not ∈ V           throws NoSuchElementException
+    Collection<E> getAdjacency(E nodeLabel) throws NoSuchElementException, IllegalArgumentException;
+
+    //NOT IMPLEMENTED (only useful for specification)
     //REQUIRES: nodeLabel ≠ null
     //          ∃ v ∈ V: v.getLabel() == nodeLabel
     //EFFECTS:  Returns v such that v ∈ V and v.getLabel() == nodeLabel, if
     //          there exist such a node.
     //          Otherwise               throws NoSuchElementException otherwise (unchecked).
     //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
-    Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException; // may expose to vulnerabilities
+    //Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException; // may expose to vulnerabilities
 }

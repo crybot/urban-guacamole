@@ -15,13 +15,13 @@ public abstract class Node<E>
      */
 
     protected final E label;
-    protected Collection<E> adiacency;
+    protected Collection<E> adjacency;
 
-    public Node(Collection<E> adiacency, E label) throws IllegalArgumentException
+    public Node(Collection<E> adjacency, E label) throws IllegalArgumentException
     {
-        if (adiacency == null || label == null) throw new IllegalArgumentException();
+        if (adjacency == null || label == null) throw new IllegalArgumentException();
         this.label = label; // TODO: force deep copy
-        this.adiacency = adiacency;
+        this.adjacency = adjacency;
     }
 
     public Node(E label)
@@ -37,8 +37,8 @@ public abstract class Node<E>
     public void addConnection(E nodeLabel) throws IllegalArgumentException
     {
         if (nodeLabel == null) throw new IllegalArgumentException();
-        if (!nodeLabel.equals(this.label) && !adiacency.contains(nodeLabel) ) 
-                adiacency.add(nodeLabel);
+        if (!nodeLabel.equals(this.label) && !adjacency.contains(nodeLabel) ) 
+                adjacency.add(nodeLabel);
     }
 
     public void removeConnection(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
@@ -47,11 +47,11 @@ public abstract class Node<E>
 
         // explicit parameter signature not necessary, but quite informative
         Predicate<E> p = (E label) -> label.equals(nodeLabel); 
-        if(!adiacency.removeIf(p)) throw new NoSuchElementException();
+        if(!adjacency.removeIf(p)) throw new NoSuchElementException();
     }
 
-    public Collection<E> getAdiacency()
+    public Collection<E> getAdjacency()
     {
-        return adiacency; // TODO: force deep copy
+        return adjacency; // TODO: force deep copy
     }
 }

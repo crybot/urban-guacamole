@@ -2,8 +2,9 @@ import java.util.HashMap;
 import java.lang.IllegalArgumentException;
 import java.util.NoSuchElementException;
 import java.util.Collection;
+import java.util.Iterator;
 
-public class HashGraph<E> implements Graph<E>
+public class HashGraph<E> implements Graph<E>, Iterable<E>
 {
     /* OVERVIEW:
      * The class HashGraph<E> represents the generic implementation of a Graph
@@ -116,7 +117,6 @@ public class HashGraph<E> implements Graph<E>
         if(!containsNode(in)) addNode(new HashNode<E>(in));
 
         nodeMap.get(out).addConnection(in);
-        //getNode(out).addConnection(in); // needs getNode returning a referencde
         assert(repOk());
     }
 
@@ -175,25 +175,7 @@ public class HashGraph<E> implements Graph<E>
 
 
     //REQUIRES: nodeLabel ≠ null
-    //          nodeMap.containsKey(nodeLabel) == true
-    //EFFECTS:  Returns the mapped value 'v' of nodeLabel such that 
-    //          nodeMap.get(nodeLabel) == v if there exists such a node.
-    //          Otherwise               throws NoSuchElementException otherwise (unchecked).
-    //          If nodeLabel == null    throws IllegalArgumentException (unchecked).
-    //TODO:     Deep copy.
-    public Node<E> getNode(E nodeLabel) throws NoSuchElementException, IllegalArgumentException
-    {
-        assert(repOk());
-        if (nodeLabel == null) throw new IllegalArgumentException();
-        Node<E> node = nodeMap.get(nodeLabel);
-        if (node == null) throw new NoSuchElementException();
-        assert(repOk());
-        return node; 
-    }
-
-
-    //REQUIRES: nodeLabel ≠ null
-    //EFFECTS:  Returns true if getNode(nodeLabel) ≠ null (there exists a mapping
+    //EFFECTS:  Returns true if nodeMap.get(nodeLabel) ≠ null (there exists a mapping
     //          from nodeLabel to any object), false otherwise.
     //          If nodeLabel == null    throws IllegalArgumentException (unchecked). 
     public boolean containsNode(E nodeLabel) throws IllegalArgumentException
@@ -204,16 +186,30 @@ public class HashGraph<E> implements Graph<E>
         return nodeMap.containsKey(nodeLabel);
     }
 
-    public Collection<Node<E>> getNodes()
+    //EFFECTS: Returns nodeMap.size() = nodeMap.keySet().size()
+    public int size() 
     {
-        assert(repOk());
-        return nodeMap.values();
+        return nodeMap.size(); // assert == nodeMap.keySet().size()
     }
 
-    public Collection<E> getLabels()
+    //REQUIRES: nodeLabel ≠ null
+    //          nodeMap.containsKey(nodeLabel) == true          
+    //EFFECTS:  Returns a collection containing adjacency nodes of
+    //          nodeMap.get(nodeLabel)
+    //          If nodeLabel == null    throws IllegalArgumentException
+    //          If nodeMap.containsKey(nodeLabel) == false  
+    //                                  throws NoSuchElementException
+    public Collection<E> getAdjacency(E nodeLabel)
     {
-        assert(repOk());
-        return nodeMap.keySet();
+        if (nodeLabel == null) throw new IllegalArgumentException();
+        Node<E> node = nodeMap.get(nodeLabel);
+        if (node == null) throw new NoSuchElementException();
+        return node.getAdjacency();
+    }
+
+    public Iterator<E> iterator()
+    {
+        return nodeMap.keySet().iterator();
     }
 
     //EFFECTS: Returns a string representation of the current class instance
@@ -224,7 +220,7 @@ public class HashGraph<E> implements Graph<E>
         final StringBuilder sb = new StringBuilder();
         for (E node : nodeMap.keySet()) 
         {
-            sb.append(node + ": " + getNode(node) + "\n");
+            sb.append(node + ": " + nodeMap.get(node) + "\n");
         }
         assert(repOk());
         return sb.toString();

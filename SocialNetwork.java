@@ -29,7 +29,7 @@ public class SocialNetwork
 
     public Collection<String> getFriends(String user)
     {
-        return new ArrayList<>(friendsGraph.getNode(user).getAdiacency());
+        return new ArrayList<>(friendsGraph.getAdjacency(user));
     }
 
     public void addFriendship(String user1, String user2)
@@ -40,9 +40,8 @@ public class SocialNetwork
 
     public String randomUser()
     {
-        Collection<String> users = friendsGraph.getLabels();
-        int rand = (int) (Math.random() * users.size());
-        for(String user : users) { if(--rand <= 0) return user; }
+        int rand = (int) (Math.random() * friendsGraph.size());
+        for(String user : friendsGraph) { if(--rand <= 0) return user; }
 
         throw new NoSuchElementException();
     }
@@ -70,16 +69,14 @@ public class SocialNetwork
     public int diameter()
     {
         int max = -1;
-        for (Node<String> source : friendsGraph.getNodes())
+        for (String source : friendsGraph)
         {
-            String s = source.getLabel();
-            for (Node<String> destination : friendsGraph.getNodes())
+            for (String dest : friendsGraph)
             {
-                String d = destination.getLabel();
                 int distance = 0;
-                if (!s.equals(d))
-                    if ((distance = getDistance(s, d)) == -1)
-                        distance = shortestPath(s, d);
+                if (!source.equals(dest))
+                    if ((distance = getDistance(source, dest)) == -1)
+                        distance = shortestPath(source, dest);
 
                 if (distance > max) max = distance;
             }
@@ -89,31 +86,29 @@ public class SocialNetwork
 
     public int shortestPath(String source, String destination)
     {
-        Queue<Node<String>> toVisit = new LinkedList<>();
-        Collection<Node<String>> users = friendsGraph.getNodes();
+        Queue<String> toVisit = new LinkedList<>();
 
-        for(Node<String> user : users) 
+        for(String user : friendsGraph) 
         {
-            setVisited(user.getLabel(), false);
-            setDistance(source, user.getLabel(), -1);
+            setVisited(user, false);
+            setDistance(source, user, -1);
         }
 
         setDistance(source, source, 0);
-        toVisit.add(friendsGraph.getNode(source));
+        toVisit.add(source);
 
         while(toVisit.size() > 0) 
         {
-            Node<String> user = toVisit.poll();
-            setVisited(user.getLabel(), true);
-            int current = getDistance(source, user.getLabel());
+            String user = toVisit.poll();
+            setVisited(user, true);
+            int current = getDistance(source, user);
 
-            for(String username : user.getAdiacency())
+            for(String adjacent : friendsGraph.getAdjacency(user))
             {
-                Node<String> adjacent = friendsGraph.getNode(username);
-                if (!isVisited(adjacent.getLabel()))
+                if (!isVisited(adjacent))
                 {
-                    setVisited(adjacent.getLabel(), true);
-                    setDistance(source, adjacent.getLabel(), current + 1);
+                    setVisited(adjacent, true);
+                    setDistance(source, adjacent, current + 1);
                     toVisit.add(adjacent);
                 }
             }
