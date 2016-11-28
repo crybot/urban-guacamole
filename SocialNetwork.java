@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.AbstractMap.SimpleEntry;
 import java.lang.Boolean;
+import java.util.ArrayList;
 
 public class SocialNetwork
 {
     private HashGraph<String> friendsGraph;
     private HashMap<String, Boolean> visited;
     private HashMap<Map.Entry<String, String>, Integer> distance;
-
 
     public SocialNetwork()
     {
@@ -29,7 +29,7 @@ public class SocialNetwork
 
     public Collection<String> getFriends(String user)
     {
-        return friendsGraph.getNode(user).getAdiacency();
+        return new ArrayList<>(friendsGraph.getNode(user).getAdiacency());
     }
 
     public void addFriendship(String user1, String user2)
@@ -41,7 +41,7 @@ public class SocialNetwork
     public String randomUser()
     {
         Collection<String> users = friendsGraph.getLabels();
-        int rand = (int) (Math.random() *  users.size());
+        int rand = (int) (Math.random() * users.size());
         for(String user : users) { if(--rand <= 0) return user; }
 
         throw new NoSuchElementException();
@@ -72,12 +72,14 @@ public class SocialNetwork
         int max = -1;
         for (Node<String> source : friendsGraph.getNodes())
         {
+            String s = source.getLabel();
             for (Node<String> destination : friendsGraph.getNodes())
             {
+                String d = destination.getLabel();
                 int distance = 0;
-                if (source != destination)
-                    if ((distance = getDistance(source.getLabel(), destination.getLabel())) == -1)
-                        distance = shortestPath(source.getLabel(), destination.getLabel());
+                if (!s.equals(d))
+                    if ((distance = getDistance(s, d)) == -1)
+                        distance = shortestPath(s, d);
 
                 if (distance > max) max = distance;
             }
