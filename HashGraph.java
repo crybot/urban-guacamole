@@ -82,7 +82,7 @@ public class HashGraph<E> implements Graph<E>
         nodeMap.putIfAbsent(node.getLabel(), node); 
         assert(repOk());
     }
-    
+
     //REQUIRES: nodeLabel ≠ null
     //MODIFIES: nodeMap
     //EFFECTS:  Adds a mapping from nodeLabel to (new HashNode<E>(nodeLabel)) 
@@ -224,7 +224,7 @@ public class HashGraph<E> implements Graph<E>
         final StringBuilder sb = new StringBuilder();
         for (E node : nodeMap.keySet()) 
         {
-           sb.append(node + ": " + getNode(node) + "\n");
+            sb.append(node + ": " + getNode(node) + "\n");
         }
         assert(repOk());
         return sb.toString();

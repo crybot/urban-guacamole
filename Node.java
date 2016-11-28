@@ -14,7 +14,7 @@ public abstract class Node<E>
      * Nodes cannot contain connections to themselves.
      */
 
-    protected E label;
+    protected final E label;
     protected Collection<E> adiacency;
 
     public Node(Collection<E> adiacency, E label) throws IllegalArgumentException
@@ -52,6 +52,6 @@ public abstract class Node<E>
 
     public Collection<E> getAdiacency()
     {
-        return adiacency;
+        return adiacency; // TODO: force deep copy
     }
 }
