@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class HashNode<E> extends Node<E>
 {
+
+    //Copies a generic collection containing values of type E into a new HashSet.
+    //Note how it is not necessary to check for duplicates since we are using a Set.
     private static <E> HashSet<E> copy(Collection<E> adjacency)
     {
         HashSet<E> tmp = new HashSet<>();

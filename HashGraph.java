@@ -32,6 +32,7 @@ public class HashGraph<E> implements Graph<E>, Iterable<E>
 
     private HashMap<E, Node<E>> nodeMap; // not synchronized hash table
 
+    // used to verify pre/post condition via assertions
     private boolean repOk()
     {
         if (nodeMap == null) return false;
@@ -207,6 +208,7 @@ public class HashGraph<E> implements Graph<E>, Iterable<E>
         return node.getAdjacency();
     }
 
+    //EFFECTS: Returns an iterator over the keys
     public Iterator<E> iterator()
     {
         return nodeMap.keySet().iterator();

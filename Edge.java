@@ -2,6 +2,7 @@ import java.lang.IllegalArgumentException;
 
 public class Edge<E>
 {
+    //incoming and outgoing nodes info
     private E inLabel, outLabel;
 
     public Edge(E outLabel, E inLabel) throws IllegalArgumentException

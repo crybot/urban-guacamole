@@ -1,16 +1,15 @@
 \documentclass{article}
-
-
-\title{[PR2] Progetto 2016/2017 --- Corso A}
-\author{Marco Pampaloni}
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage[utf8]{inputenc}
-\date{28/11/2016}
 \hypersetup{
     colorlinks, urlcolor=blue
 }
+
+\title{[PR2] Progetto 2016/2017 --- Corso A}
+\author{Marco Pampaloni}
+\date{28/11/2016}
 
 
 \begin{document}
@@ -27,6 +26,7 @@
         \url{https://github.com/crybot/urban-guacamole}.\\
         \emph{(La copertina non conta per il limite massimo delle pagine)}
     \end{abstract}
+
     \newpage
 
     \section{Specifica di progetto}
@@ -51,12 +51,12 @@
         inserire anche le connessioni opposte qualora sia necessario).
         Il tipo Node possiede i metodi di base per operare su di esso:\\
         \begin{itemize}
-            \item getLabel(): restituisce al chiamante il contenuto informativo del nodo;
-            \item addConnection(E v): aggiunge una connessione tra il nodo this e il nodo v;
-            \item removeConnection(E v): similmente, rimuove una connessione;
-            \item getAdjacency(): restituisce una collezione contenente i nodi adiacenti.
+            \item $getLabel()$: restituisce al chiamante il contenuto informativo del nodo;
+            \item $addConnection(E\ v)$: aggiunge una connessione tra il nodo this e il nodo v;
+            \item $removeConnection(E\ v)$: similmente, rimuove una connessione;
+            \item $getAdjacency()$: restituisce una collezione contenente i nodi adiacenti.
         \end{itemize}
-        Il tipo Node è esteso dalla tipo di dato HashNode, che reimplementa alcuni dei suoi metodi
+        Il tipo Node è esteso dal tipo di dato HashNode, che reimplementa alcuni dei suoi metodi
         ed utilizza un HashSet (collezione inclusa nel JCF) per memorizzare i nodi adiacenti.
         È la soluzione più efficiente per eliminare la possibilità di avere elementi duplicati
         all'interno della collezione.
@@ -78,9 +78,9 @@
         restituendo 
         \\$nodeMap().keySet().iterator()$. 
         \begin{align*}
-            AF: \  \ &[ \langle k_1, f(k_1)\rangle , \langle k_2, f(k_2)\rangle , ... , \langle k_n, f(k_n) 
+            &AF: \  \ [ \langle k_1, f(k_1)\rangle , \langle k_2, f(k_2)\rangle , ... , \langle k_n, f(k_n) 
         \rangle] \\
-            &where f(k) : nodeMap.keySet() \longrightarrow nodeMap.values() 
+            &where \ \ f(k) : nodeMap.keySet() \longrightarrow nodeMap.values() 
         \end{align*}
 
         \paragraph{SocialNetwork: }
@@ -99,5 +99,9 @@
         l'algoritmo \emph{BFS}, che nel caso di grafi non pesati è più efficiente dell'algoritmo
         di Dijkstra. È implementato infine il metodo per calcolare il diametro della rete, che sfrutta
         il metodo $shortestPath()$ e le sue informazioni accumulate per effettuare della memoizzazione.
+        Con la rete di test, che conta circa 9000 nodi, è risultato impraticabile calcolare il diametro
+        con l'algoritmo proposto (che risulta essere ottimale). È stimabile un upper bound
+        per la complessità computazionale di $O(|V|^3)$ dove $V$ è l'insieme dei nodi appartenenti
+        al grafo.
 
 \end{document}
